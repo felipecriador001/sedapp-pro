@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SedApp Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .auth-container { width: 100%; max-width: 400px; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .auth-container h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+        .auth-container p { color: #666; margin-bottom: 30px; font-size: 14px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; }
+        .form-group input:focus { outline: none; border-color: #667eea; }
+        .login-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4); }
+        .error { color: #e74c3c; font-size: 14px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="auth-container" id="authContainer">
+    <h1>SedApp Pro</h1>
+    <p>Treinamento em Seducao Consciente com IA</p>
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" id="email" value="demo@sedapp.com">
+    </div>
+    <div class="form-group">
+        <label>Senha:</label>
+        <input type="password" id="password" value="Demo123!@">
+    </div>
+    <button class="login-btn" onclick="login()">Entrar</button>
+    <div class="error" id="errorMsg"></div>
+</div>
+<div class="dashboard" id="dashboard" style="display:flex;width:100%;height:100vh;background:#f5f5f5">
+    <div class="sidebar" style="width:280px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:30px 20px;overflow-y:auto">
+        <h2 style="font-size:20px;margin-bottom:30px;text-align:center">SedApp Pro</h2>
+        <div class="nav-item active" onclick="showModule('dashboard')" style="padding:15px;margin-bottom:10px;background:rgba(255,255,255,0.1);border-radius:8px;cursor:pointer">📊 Dashboard</div>
+        <div class="nav-item" onclick="showModule('trilhas')" style="padding:15px;margin-bottom:10px;background:rgba(255,255,255,0.1);border-radius:8px;cursor:pointer">📚 Trilhas</div>
+        <div class="nav-item" onclick="showModule('chat')" style="padding:15px;margin-bottom:10px;background:rgba(255,255,255,0.1);border-radius:8px;cursor:pointer">💬 Chat IA</div>
+        <div class="nav-item" onclick="showModule('pratica')" style="padding:15px;margin-bottom:10px;background:rgba(255,255,255,0.1);border-radius:8px;cursor:pointer">✏️ Prática Real</div>
+        <div class="nav-item" onclick="showModule('scout')" style="padding:15px;margin-bottom:10px;background:rgba(255,255,255,0.1);border-radius:8px;cursor:pointer">🔍 Social Scout</div>
+        <div class="nav-item" onclick="showModule('relatorio')" style="padding:15px;margin-bottom:10px;background:rgba(255,255,255,0.1);border-radius:8px;cursor:pointer">📈 Relatório</div>
+    </div>
+    <div class="main-content" style="flex:1;display:flex;flex-direction:column">
+        <div class="header" style="background:white;padding:20px 30px;box-shadow:0 2px 10px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center">
+            <h2 id="pageTitle" style="color:#333;font-size:24px">Dashboard</h2>
+            <div class="user-info" style="display:flex;align-items:center;gap:15px">
+                <div class="credit-badge" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:8px 15px;border-radius:20px;font-weight:600">Créditos: <span id="credits">5</span></div>
+                <button class="logout-btn" onclick="logout()" style="padding:8px 15px;background:#e74c3c;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600">Sair</button>
+            </div>
+        </div>
+        <div class="content" style="flex:1;padding:30px;overflow-y:auto">
+            <div class="content-section active" id="dashboard-section">
+                <h2>Bem-vindo ao SedApp Pro</h2>
+                <p style="margin:20px 0;color:#666;font-size:16px">Escolha um módulo para começar:</p>
+                <div class="module-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px">
+                    <div class="module-card" onclick="showModule('trilhas')" style="background:white;padding:25px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);cursor:pointer"><h3 style="color:#667eea;margin-bottom:10px">📚 Trilhas</h3><p style="color:#666">Aprenda conteúdo estruturado em 4 categorias</p></div>
+                    <div class="module-card" onclick="showModule('chat')" style="background:white;padding:25px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);cursor:pointer"><h3 style="color:#667eea;margin-bottom:10px">💬 Chat IA</h3><p style="color:#666">Scoring apenas ao final da conversa</p></div>
+                    <div class="module-card" onclick="showModule('pratica')" style="background:white;padding:25px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);cursor:pointer"><h3 style="color:#667eea;margin-bottom:10px">✏️ Prática Real</h3><p style="color:#666">3 sugestões por -1 crédito</p></div>
+                    <div class="module-card" onclick="showModule('scout')" style="background:white;padding:25px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);cursor:pointer"><h3 style="color:#667eea;margin-bottom:10px">🔍 Social Scout</h3><p style="color:#666">Análise com URLs sociais por -3 créditos</p></div>
+                    <div class="module-card" onclick="showModule('relatorio')" style="background:white;padding:25px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);cursor:pointer"><h3 style="color:#667eea;margin-bottom:10px">📈 Relatório</h3><p style="color:#666">Progresso e histórico de atividades</p></div>
+                </div>
+            </div>
+            <div class="content-section" id="trilhas-section" style="display:none"><h2>Trilhas de Aprendizado</h2><div id="trilhasContainer"></div></div>
+            <div class="content-section" id="chat-section" style="display:none"><h2>Chat IA - Scoring ao Final</h2><div id="chatMessages" style="background:white;padding:20px;border-radius:12px;height:400px;overflow-y:auto;margin-bottom:20px"></div><div style="display:flex;gap:10px"><textarea id="chatInput" placeholder="Digite sua mensagem..." style="flex:1;padding:12px;border:1px solid #ddd;border-radius:8px;height:50px"></textarea><button onclick="sendChatMessage()" style="padding:12px 20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600">Enviar</button></div><button onclick="finalizarChat()" style="margin-top:20px;padding:12px 20px;background:#27ae60;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600">Finalizar e Ver Scoring</button><div id="scoringContent"></div></div>
+            <div class="content-section" id="pratica-section" style="display:none"><h2>Prática Real</h2><div class="form-group"><label>Mensagem WhatsApp:</label><textarea id="practicaMsg" placeholder="Cole a mensagem..." style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;min-height:80px"></textarea></div><button class="btn" onclick="generatePracticaSuggestions()" style="padding:12px 20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600">Gerar 3 Sugestões (-1 Crédito)</button><div id="suggestionsContainer"></div></div>
+            <div class="content-section" id="scout-section" style="display:none"><h2>Social Scout</h2><div class="form-group"><label>Nome:</label><input type="text" id="scoutName" placeholder="Ex: Maria Silva" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px"></div><div class="form-group"><label>Instagram:</label><input type="text" id="scoutInsta" placeholder="URL" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px"></div><div class="form-group"><label>Facebook:</label><input type="text" id="scoutFace" placeholder="URL" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px"></div><button class="btn" onclick="generateScoutAnalysis()" style="padding:12px 20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600">Analisar (-3 Créditos)</button><div id="scoutResult"></div></div>
+            <div class="content-section" id="relatorio-section" style="display:none"><h2>Relatório</h2><div style="background:white;padding:25px;border-radius:12px"><p><strong>Créditos:</strong> <span id="creditDisplay">5/5</span></p><p style="margin-top:15px"><strong>Pontos:</strong> <span id="totalPoints">0</span></p><p style="margin-top:15px"><strong>Nível:</strong> <span id="userLevel">Iniciante</span></p><p style="margin-top:20px"><strong>Histórico:</strong></p><div id="historyList" style="margin-top:10px;max-height:300px;overflow-y:auto"></div></div></div>
+        </div>
+    </div>
+</div>
+<script>
+let userData={email:'',credits:5,chatMessages:[],points:0,history:[]};
+function sanitize(str){return str.replace(/[<>]/g,'');}
+function login(){const e=document.getElementById('email').value;const p=document.getElementById('password').value;if(e==='demo@sedapp.com'&&p==='Demo123!@'){userData.email=e;localStorage.setItem('sedappData',JSON.stringify(userData));document.getElementById('authContainer').style.display='none';document.getElementById('dashboard').style.display='flex';loadTrilhas();}else{document.getElementById('errorMsg').innerHTML='Credenciais invalidas';}}
+function logout(){document.getElementById('dashboard').style.display='none';document.getElementById('authContainer').style.display='block';}
+function showModule(m){document.querySelectorAll('.content-section').forEach(s=>s.style.display='none');document.getElementById(m+'-section').style.display='block';const t={'dashboard':'Dashboard','trilhas':'Trilhas','chat':'Chat IA','pratica':'Pratica Real','scout':'Social Scout','relatorio':'Relatorio'};document.getElementById('pageTitle').innerHTML=t[m];}
+function loadTrilhas(){const tr=[{cat:'Fundamentos',content:'Principios eticos de atracao'},{cat:'Comunicacao',content:'Linguagem corporal confiante'},{cat:'Emocional',content:'Identifique sinais nao-verbais'},{cat:'Pratica',content:'Aplique tecnicas em conversas reais'}];let h='';tr.forEach((t,i)=>{h+=`<div style="background:white;padding:20px;border-radius:12px;margin-bottom:15px;border-left:4px solid #667eea"><h4 style="color:#667eea">${sanitize(t.cat)}</h4><p style="color:#666">${sanitize(t.content)}</p><div style="margin-top:10px;width:100%;height:8px;background:#ddd;border-radius:10px"><div style="height:100%;background:linear-gradient(90deg,#667eea,#764ba2);width:${(i+1)*25}%"></div></div></div>`;});document.getElementById('trilhasContainer').innerHTML=h;}
+function sendChatMessage(){const m=document.getElementById('chatInput').value;if(!m)return;userData.chatMessages.push({user:'user',text:sanitize(m)});document.getElementById('chatInput').value='';const r=['Entendo. Isso eh interessante.','Que legal, continue.','Faz sentido.','Como se sente?','Interessante!'];setTimeout(()=>{userData.chatMessages.push({user:'ai',text:r[Math.floor(Math.random()*r.length)]});renderChat();},300);}
+function renderChat(){let h='';userData.chatMessages.forEach(m=>{h+=`<div style="align-self:${m.user==='user'?'flex-end':'flex-start'};background:${m.user==='user'?'#667eea':'#f0f0f0'};color:${m.user==='user'?'white':'#333'};padding:12px 15px;border-radius:12px;max-width:80%;font-size:14px">${m.text}</div>`;});document.getElementById('chatMessages').innerHTML=h;document.getElementById('chatMessages').scrollTop=document.getElementById('chatMessages').scrollHeight;}
+function finalizarChat(){if(userData.chatMessages.length===0)return alert('Tenha uma conversa primeiro!');const s={'Qualidade':Math.floor(Math.random()*30)+70,'Empatia':Math.floor(Math.random()*25)+75,'Autenticidade':Math.floor(Math.random()*20)+80,'Controle':Math.floor(Math.random()*30)+70,'Influencia':Math.floor(Math.random()*25)+75};const t=Object.values(s).reduce((a,b)=>a+b)/5;userData.points+=Math.floor(t/10);userData.chatMessages=[];let sc='<div style="background:white;padding:25px;border-radius:12px;margin-top:20px"><h3 style="color:#667eea;margin-bottom:15px">Scoring da Conversa</h3>';for(let[k,v]of Object.entries(s)){sc+=`<div style="padding:15px;background:#f9f9f9;border-radius:8px;margin-bottom:10px;border-left:4px solid #667eea"><strong>${k}:</strong> ${v}/100</div>`;}sc+=`<div style="padding:15px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-radius:8px;margin-top:15px;text-align:center;font-size:18px;font-weight:600">Score Final: ${t.toFixed(1)}/100</div></div>`;document.getElementById('scoringContent').innerHTML=sc;localStorage.setItem('sedappData',JSON.stringify(userData));}
+function generatePracticaSuggestions(){if(userData.credits<1)return alert('Creditos insuficientes!');const m=document.getElementById('practicaMsg').value;if(!m)return alert('Cole uma mensagem!');userData.credits--;document.getElementById('credits').innerHTML=userData.credits;const sug=['Que legal! Quando voce tem tempo?','Concordo! Voce ja pensou em...?','Entendo! Por que nao a gente conversa?'];let h='<div style="margin-top:20px;display:grid;gap:10px">';sug.forEach((s,i)=>{h+=`<div style="padding:15px;background:white;border:2px solid #ddd;border-radius:8px;font-size:14px">Sugestao ${i+1}: ${sanitize(s)}</div>`;});h+='</div>';document.getElementById('suggestionsContainer').innerHTML=h;userData.history.push('Pratica Real - '+new Date().toLocaleString());localStorage.setItem('sedappData',JSON.stringify(userData));}
+function generateScoutAnalysis(){if(userData.credits<3)return alert('Creditos insuficientes!');const n=document.getElementById('scoutName').value;if(!n)return alert('Digite um nome!');userData.credits-=3;document.getElementById('credits').innerHTML=userData.credits;const a=`<div style="background:white;padding:25px;border-radius:12px;margin-top:20px"><h3 style="color:#667eea">Analise de ${sanitize(n)}</h3><div style="margin-top:15px"><p><strong>Personalidade:</strong> Inteligente, dinamica</p><p><strong>Interesses:</strong> Viagens, leitura, arte</p><p><strong>Valores:</strong> Autenticidade, crescimento</p><p><strong>Recomendacao:</strong> Seja genuino, faca perguntas significativas</p></div></div>`;document.getElementById('scoutResult').innerHTML=a;userData.history.push('Social Scout - '+new Date().toLocaleString());localStorage.setItem('sedappData',JSON.stringify(userData));}
+window.addEventListener('load',()=>{const sv=localStorage.getItem('sedappData');if(sv)userData=JSON.parse(sv);document.getElementById('creditDisplay').innerHTML=userData.credits+'/5';document.getElementById('totalPoints').innerHTML=userData.points;let hist=userData.history.map(h=>`<div style="padding:10px;background:#f9f9f9;border-radius:8px;margin-bottom:5px;border-left:3px solid #667eea">${h}</div>`).join('');document.getElementById('historyList').innerHTML=hist||'<p style="color:#999">Nenhuma atividade</p>';});
+</script>
+</body>
+</html>
